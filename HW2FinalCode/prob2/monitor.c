@@ -19,44 +19,40 @@ Monitor *Monitor_init() {
 
 
 void mon_insert(char alpha) {
-	if (bMonInited == 0) {
+	if (bMonInited == 0) 
 		mon = *Monitor_init();
-	}
-	pthread_mutex_lock(&mon.mutex);
 	
+	pthread_mutex_lock(&mon.mutex);
+		
 	int isFull = RingBuff_IsFull(&mon.queue);
-	while(isFull) {
-		pthread_cond_wait(&mon.full, &mon.mutex);		
-		isFull = RingBuff_IsFull(&mon.queue);
+	if(isFull) {
+		//Broadcast to threads that are currently suspended and waiting on the full condition they can start
+		pthread_cond_broadcast(&mon.full); 
+		//Suspend this thread until the threads that just started broadcast the empty condition. 
+		pthread_cond_wait(&mon.empty, &mon.mutex);	
 	}
 	
 	RingBuff_Write(&mon.queue, alpha);
 	RingBuff_PrintBuffer(&mon.queue);	
 	
-	if (RingBuff_IsEmpty(&mon.queue)) {
-		pthread_cond_signal(&mon.empty);	
-	}
 	pthread_mutex_unlock(&mon.mutex);
 	
 }
 
 char mon_remove(char replacementChar) {
-	if (bMonInited==0) {
+	if (bMonInited==0) 
 		printf("MONITOR NOT INITIALIZED");
-	}
+	
 	pthread_mutex_lock(&mon.mutex);
 	
 	int isEmpty = RingBuff_IsEmpty(&mon.queue);
-	while (isEmpty) {		
-		pthread_cond_wait(&mon.empty, &mon.mutex);		
-		isEmpty = RingBuff_IsEmpty(&mon.queue);
+	if (isEmpty) {		
+		pthread_cond_broadcast(&mon.empty); //Tell the threads that are waiting on empty condition to start
+		pthread_cond_wait(&mon.full, &mon.mutex);//Wait for those threads to broadcast the full condition.	
 	}
+	
 	char value = RingBuff_Read(&mon.queue, ' ');
-	
-	if (RingBuff_IsFull(&mon.queue)) {
-		pthread_cond_signal(&mon.empty);	
-	}
 	pthread_mutex_unlock(&mon.mutex);
-	
+
 	return value;
 }

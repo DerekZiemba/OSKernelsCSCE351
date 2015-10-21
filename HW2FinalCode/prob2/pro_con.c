@@ -4,7 +4,7 @@
 #include "../SharedResources.h"
 #include "monitor.h"
 
-#define HARD_DELAY 1000
+#define HARD_DELAY 1500
 
 // Provided thread code
 void *producer(void *threadid) {

@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include "../SharedResources.h"
 
-#define BUFFER_SIZE 100
+#define BUFFER_SIZE 80
 #define NUM_THREADS 8
 
 typedef struct Monitor Monitor;
