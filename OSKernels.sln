@@ -8,8 +8,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HW1Contexts", "HW1Contexts\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Monitors_Part1", "HW2Monitors_Part1\HW2Monitors_Part1.vcxproj", "{8D617A94-D289-47A0-A36D-25DC5DBDFD9E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rejects", "Rejects\Rejects.vcxproj", "{BEC5C942-55EB-42FF-8B07-87D1F8A1FB45}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HW2", "HW2", "{949F9E1D-98F7-4711-9BF5-0AB686A60BAF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HW1", "HW1", "{14D1FFA9-F332-4D7A-BB2E-23E39338F436}"
@@ -32,10 +30,6 @@ Global
 		{8D617A94-D289-47A0-A36D-25DC5DBDFD9E}.Debug|x86.Build.0 = Debug|Win32
 		{8D617A94-D289-47A0-A36D-25DC5DBDFD9E}.Release|x86.ActiveCfg = Release|Win32
 		{8D617A94-D289-47A0-A36D-25DC5DBDFD9E}.Release|x86.Build.0 = Release|Win32
-		{BEC5C942-55EB-42FF-8B07-87D1F8A1FB45}.Debug|x86.ActiveCfg = Debug|Win32
-		{BEC5C942-55EB-42FF-8B07-87D1F8A1FB45}.Debug|x86.Build.0 = Debug|Win32
-		{BEC5C942-55EB-42FF-8B07-87D1F8A1FB45}.Release|x86.ActiveCfg = Release|Win32
-		{BEC5C942-55EB-42FF-8B07-87D1F8A1FB45}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,18 +7,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#define FALSE	0
-#define TRUE	!FALSE
 
-//typedef enum {
-	//false = FALSE, 
-	//true = TRUE
-//} bool;
-
-//#define FALSE	0
-//#define TRUE	!FALSE
-
-typedef struct RingBuff RingBuff, *pno;
+typedef struct RingBuff RingBuff;
 
 /* Circular buffer object */
 struct RingBuff {
@@ -41,7 +31,6 @@ void RingBuff_Write(RingBuff *B, char elem);
 char RingBuff_Read(RingBuff *B,char emptySymbol);
 
 void RingBuff_PrintBuffer(RingBuff *B);
-
 
 
 char rand_alpha();
