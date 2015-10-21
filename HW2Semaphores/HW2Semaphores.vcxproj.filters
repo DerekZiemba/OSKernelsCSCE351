@@ -28,15 +28,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CircleBuffer.c">
+    <ClCompile Include="..\HW2FinalCode\SharedResources.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Semaphore3.c">
+    <ClCompile Include="..\HW2FinalCode\prob1\prob1.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CircleBuffer.h">
+    <ClInclude Include="..\HW2FinalCode\SharedResources.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

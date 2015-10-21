@@ -12,6 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E31C9FED-FB28-413D-A216-DE5C38EB41AE}</ProjectGuid>
+    <ProjectName>Semaphores</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -63,16 +64,16 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CircleBuffer.c" />
-    <ClCompile Include="Semaphore3.c" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="debug.mak" />
     <None Include="Makefile" />
     <None Include="release.mak" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CircleBuffer.h" />
+    <ClCompile Include="..\HW2FinalCode\prob1\prob1.c" />
+    <ClCompile Include="..\HW2FinalCode\SharedResources.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\HW2FinalCode\SharedResources.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

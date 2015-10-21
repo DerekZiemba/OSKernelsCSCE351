@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
-#include "Resources.h"
+#include "../SharedResources.h"
 
 #define BUFFER_SIZE 100
 #define NUM_THREADS 8
@@ -10,7 +10,7 @@
 typedef struct Monitor Monitor;
 
 struct Monitor {
-	CircularBuffer queue;
+	RingBuff queue;
 	pthread_cond_t full;
 	pthread_cond_t empty;
 	pthread_mutex_t mutex;

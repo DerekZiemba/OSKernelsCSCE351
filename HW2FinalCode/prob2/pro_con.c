@@ -1,18 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
-#include "Resources.h"
+#include "../SharedResources.h"
 #include "monitor.h"
 
 #define HARD_DELAY 1000
 
 // Provided thread code
-void producer(void *threadid) {
+void *producer(void *threadid) {
 	long thread_id = (long)threadid;
 	int iteration = 0;
 	while (1) {		
 		char alpha = rand_alpha();
-		//printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, CircularBuffer_OccupiedSpace(&ringbuf));
+		//printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuff_OccupiedSpace(&ringbuf));
 		//printf("ADDING Char %c, ThreadID: %lu, Iteration: %d\n", alpha,thread_id,iteration);
 		mon_insert(alpha);
 		hardDelay(HARD_DELAY);		
@@ -21,14 +21,14 @@ void producer(void *threadid) {
 }
 
 // Provided thread code
-void consumer(void *threadid) {
+void *consumer(void *threadid) {
 	long thread_id = (long)threadid;
 	int iteration = 0;
 	while (1) {		
 		char alpha = mon_remove(' ');
 		//printf("REMOVED Char %c, ThreadID: %lu, Iteration: %d\n", alpha, thread_id, iteration);
 		printf("removed char: %c\n", alpha);
-		//printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, CircularBuffer_OccupiedSpace(&ringbuf));
+		//printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuff_OccupiedSpace(&ringbuf));
 		hardDelay(HARD_DELAY);
 		iteration++;
 	}

@@ -7,6 +7,10 @@
 #ifndef _RESOURCES_h
 #define _RESOURCES_h
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+
 typedef struct CircularBuffer CircularBuffer;
 
 /* Circular buffer object */
@@ -28,11 +32,9 @@ char CircularBuffer_Read(CircularBuffer *cb,char emptySymbol);
 void CircularBuffer_PrintBuffer(CircularBuffer *cb);
 
 
-//#define CircularBuffer_IsFull(B) (CircularBuffer_OccupiedSpace((B)) - (B)->size-1 == 0)
-//#define CircularBuffer_IsEmpty(B) (CircularBuffer_OccupiedSpace((B)) == 0)
 #define CircularBuffer_FreeSpace(B) ((B)->size - CircularBuffer_OccupiedSpace((B)))
 
-char rand_char(void);
+char rand_alpha();
 void hardDelay(long multiplier);
 
 #endif

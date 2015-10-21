@@ -1,13 +1,12 @@
-/*
- *  Created on: Jan 22, 2014
- *      Author: Derek Ziemba
- *  NOTE: Heavily modified from version I created for Arduino in CSCE222. 
- */
-#include "Resources.h"
+
+#include "SharedResources.h"
 
 
-CircularBuffer *CircularBuffer_init(int size) {
-	CircularBuffer *B = calloc(1, sizeof(CircularBuffer));	
+pno Initializer(RingBuff *B,int size) {return RingBuff_init(size);}
+//pno Initializer(RingBuff *B, int size) {return RingBuff_init(B, size);}
+
+RingBuff *RingBuff_init(int size) {
+	RingBuff *B = calloc(1, sizeof(RingBuff));	
 	B->size  = size + 1; /* include empty elem */
 	B->tail = 0;
 	B->head   = 0;
@@ -16,15 +15,19 @@ CircularBuffer *CircularBuffer_init(int size) {
 }
 
 
-int CircularBuffer_IsFull(CircularBuffer *cb) {
-	return cb->size  - CircularBuffer_OccupiedSpace(cb) -1 == 0;
+int RingBuff_MaxSize(RingBuff *B) {
+	return B->size - 1 ;	
 }
 
-int CircularBuffer_IsEmpty(CircularBuffer *cb){
-	return CircularBuffer_OccupiedSpace(cb) == 0;	
+int RingBuff_IsFull(RingBuff *B) {
+	return RingBuff_MaxSize(B)  - RingBuff_OccupiedSpace(B) == 0;
 }
 
-int CircularBuffer_OccupiedSpace(CircularBuffer *B) {
+int RingBuff_IsEmpty(RingBuff *V){
+	return RingBuff_OccupiedSpace(V) == 0;	
+}
+
+int RingBuff_OccupiedSpace(RingBuff *B) {
 	if (B->head >= B->tail) {
 		return B->head - B->tail;
 	}
@@ -33,10 +36,14 @@ int CircularBuffer_OccupiedSpace(CircularBuffer *B) {
 	}	
 }
 
+int RingBuff_FreeSpace(RingBuff *B) {
+	return ((B)->size - RingBuff_OccupiedSpace((B)));
+}
+
 /* Write an element, overwriting oldest element if buffer is full. App can
    choose to avoid the overwrite by checking BIsFull(). */
-void CircularBuffer_Write(CircularBuffer *B, char elem) {
-	if (CircularBuffer_IsFull(B)) {
+void RingBuff_Write(RingBuff *B, char elem) {
+	if (RingBuff_IsFull(B)) {
 		printf("ERROR BUFFER IS FULL CANNOT WRITE NOW\n");
 	}
 	else {
@@ -48,14 +55,14 @@ void CircularBuffer_Write(CircularBuffer *B, char elem) {
 }
  
 /* Read oldest element. App must ensure !BIsEmpty() first. */
-char CircularBuffer_Read(CircularBuffer *B, char emptySymbol) {
+char RingBuff_Read(RingBuff *B, char emptySymbol) {
 	char elem = B->elems[B->tail];	
 	B->elems[B->tail] = emptySymbol;
 	B->tail = (B->tail + 1) % B->size;	
 	return elem;
 }
 
-void CircularBuffer_PrintBuffer(CircularBuffer *B) {
+void RingBuff_PrintBuffer(RingBuff *B) {
 	int size = B->size;
 	int i;
 	for (i=0; i< size; i++)
