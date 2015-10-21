@@ -20,13 +20,16 @@ struct CircularBuffer {
 
 CircularBuffer *CircularBuffer_init(int size);
 
+int CircularBuffer_IsFull(CircularBuffer *cb);
+int CircularBuffer_IsEmpty(CircularBuffer *cb);
 int CircularBuffer_OccupiedSpace(CircularBuffer *cb);
 void CircularBuffer_Write(CircularBuffer *cb, char elem);
 char CircularBuffer_Read(CircularBuffer *cb,char emptySymbol);
 void CircularBuffer_PrintBuffer(CircularBuffer *cb);
 
-#define CircularBuffer_IsFull(B) (CircularBuffer_OccupiedSpace((B)) - (B)->size == 0)
-#define CircularBuffer_IsEmpty(B) (CircularBuffer_OccupiedSpace((B)) == 0)
+
+//#define CircularBuffer_IsFull(B) (CircularBuffer_OccupiedSpace((B)) - (B)->size-1 == 0)
+//#define CircularBuffer_IsEmpty(B) (CircularBuffer_OccupiedSpace((B)) == 0)
 #define CircularBuffer_FreeSpace(B) ((B)->size - CircularBuffer_OccupiedSpace((B)))
 
 char rand_char(void);

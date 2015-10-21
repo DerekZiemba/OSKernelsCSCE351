@@ -6,8 +6,6 @@
 #include "Resources.h"
 #include "monitor.h"
 
-#define NUM_THREADS 8
-#define BUFFER_SIZE 100
 #define HARD_DELAY 1000
 
 /*positive 800 does a really good job of showing a full buffer 
@@ -15,13 +13,6 @@
 /*It's interesting to see not all threads will get equal time. For instance, 
 * Moving the window around or doing some background task affects the buffer.*/
 int ProducerBias = 800; //How much more often the producer will be run.
-
-CircularBuffer ringbuf;
-sem_t full = NULL;
-sem_t empty = NULL;
-pthread_mutex_t mutex = NULL;
-
-
 
 // Provided thread code
 void producer(void *threadid) {
@@ -31,7 +22,7 @@ void producer(void *threadid) {
 		char alpha = rand_char();
 		//printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, CircularBuffer_OccupiedSpace(&ringbuf));
 		mon_insert(alpha);
-		hardDelay(HARD_DELAY);
+		hardDelay(HARD_DELAY);		
 		iteration++;
 	}
 }
@@ -42,6 +33,7 @@ void consumer(void *threadid) {
 	int iteration = 0;
 	while (1) {		
 		char alpha = mon_remove(' ');
+		printf("Removed Char %c\n", alpha);
 		//printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, CircularBuffer_OccupiedSpace(&ringbuf));
 		hardDelay(HARD_DELAY);
 		iteration++;
@@ -51,16 +43,7 @@ void consumer(void *threadid) {
     
 
 int main() {
-	//nextBufferIndex = 0;
-	ringbuf = *CircularBuffer_init(BUFFER_SIZE);
-	full = (sem_t*) malloc(sizeof(sem_t));
-	empty = (sem_t*) malloc(sizeof(sem_t));
-	mutex = (sem_t*) malloc(sizeof(sem_t));
 
-	sem_init(&full, 0, 0);
-	sem_init(&empty, 0, BUFFER_SIZE);
-	pthread_mutex_init(&mutex, 0);
-	
 	pthread_t producers[NUM_THREADS];
 	pthread_t consumers[NUM_THREADS];
 	

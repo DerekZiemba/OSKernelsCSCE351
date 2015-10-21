@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := CircleBuffer.c HW2Semaphores.c HW2Semaphores2.c Semaphore3.c
+SOURCEFILES := CircleBuffer.c Semaphore3.c
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 

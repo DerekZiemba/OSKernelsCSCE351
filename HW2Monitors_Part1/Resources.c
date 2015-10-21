@@ -16,7 +16,16 @@ CircularBuffer *CircularBuffer_init(int size) {
 	B->elems = calloc(B->size, sizeof(char));	
 	return B;
 }
- 
+
+
+int CircularBuffer_IsFull(CircularBuffer *cb) {
+	return cb->size  - CircularBuffer_OccupiedSpace(cb) -1 == 0;
+}
+
+int CircularBuffer_IsEmpty(CircularBuffer *cb){
+	return CircularBuffer_OccupiedSpace(cb) == 0;	
+}
+
 int CircularBuffer_OccupiedSpace(CircularBuffer *B) {
 	if (B->head >= B->tail) {
 		return B->head - B->tail;
