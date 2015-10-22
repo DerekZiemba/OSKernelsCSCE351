@@ -1,4 +1,3 @@
-
 #include "SharedResources.h"
 
 
@@ -33,4 +32,3 @@ char RingBuffer_Read(RingBuffer *B, char emptySymbol) {
 	B->tail = (B->tail + 1) % B->size;	
 	return elem;
 }
-

@@ -29,7 +29,7 @@ void *consumer(void *threadid) {
 		//printf("REMOVED Char %c, ThreadID: %lu, Iteration: %d\n", alpha, thread_id, iteration);
 		printf("removed char: %c\n", alpha);
 		//printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuff_OccupiedSpace(&ringbuf));
-		hardDelay(HARD_DELAY);
+		hardDelay(HARD_DELAY+1000);
 		iteration++;
 	}
 }

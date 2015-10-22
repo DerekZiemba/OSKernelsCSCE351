@@ -68,15 +68,14 @@
     <None Include="release.mak" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\Buffer.c" />
     <ClCompile Include="..\HW2FinalCode\prob3\monitor.c" />
     <ClCompile Include="..\HW2FinalCode\prob3\pro_con.c" />
     <ClCompile Include="..\HW2FinalCode\prob3\Queue.c" />
     <ClCompile Include="..\HW2FinalCode\prob3\Semaphore.c" />
+    <ClCompile Include="..\HW2FinalCode\RingBuffer.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\HW2FinalCode\prob3\monitor.h" />
-    <ClInclude Include="..\HW2FinalCode\prob3\Queue.h" />
     <ClInclude Include="..\HW2FinalCode\prob3\Semaphore.h" />
     <ClInclude Include="..\HW2FinalCode\SharedResources.h" />
   </ItemGroup>

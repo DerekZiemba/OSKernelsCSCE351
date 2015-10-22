@@ -34,7 +34,7 @@
     <ClCompile Include="..\HW2FinalCode\prob2\pro_con.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\Buffer.c">
+    <ClCompile Include="..\HW2FinalCode\RingBuffer.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -69,8 +69,8 @@
     <None Include="release.mak" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\Buffer.c" />
     <ClCompile Include="..\HW2FinalCode\prob1\prob1.c" />
+    <ClCompile Include="..\HW2FinalCode\RingBuffer.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\HW2FinalCode\SharedResources.h" />
