@@ -11,7 +11,7 @@
 typedef struct Monitor Monitor;
 
 struct Monitor {
-	RingBuffer queue;
+	Queue queue;
 	CV full;
 	CV empty;
 	pthread_mutex_t mutex;

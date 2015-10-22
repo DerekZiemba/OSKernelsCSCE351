@@ -4,12 +4,11 @@
 #define SEMAPHORE_H_
 
 #include "../SharedResources.h"
-#include "queue.h"
 
 typedef struct CV_t {
-	queue_t queue;
-	queue_t blocked;
-	queue_t active;
+	Queue queue;
+	Queue blocked;
+	Queue active;
 	
 	int sem_blocking_id;
 	int count;
