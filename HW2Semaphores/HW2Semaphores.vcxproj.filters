@@ -28,10 +28,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\SharedResources.c">
+    <ClCompile Include="..\HW2FinalCode\prob1\prob1.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\prob1\prob1.c">
+    <ClCompile Include="..\HW2FinalCode\Buffer.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

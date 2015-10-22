@@ -1,12 +1,12 @@
 #include "queue.h"
 
 queue_t *Queue_init() {
-	queue_t *queue = (queue_t *) calloc(sizeof(queue_t));
+	queue_t *queue = (queue_t *) calloc(1,sizeof(queue_t));
 	return queue;
 }
 
 void Enqueue(queue_t *queue, void *data){
-	node_t  *elem = (node_t *)calloc(sizeof(node_t));
+	node_t  *elem = (node_t *)calloc(1,sizeof(node_t));
 	elem->data = data;
 	elem->next = NULL;
     

@@ -7,15 +7,15 @@
 
 #define NUM_THREADS 8
 #define BUFFER_SIZE 100
-#define HARD_DELAY 2000
+#define HARD_DELAY 1000
 
 /*positive 800 does a really good job of showing a full buffer 
  *negative 500 does pretty good at showing an empty buffer */
 /*It's interesting to see not all threads will get equal time. For instance, 
 * Moving the window around or doing some background task affects the buffer.*/
-int ProducerBias = 2000; //How much more often the producer will be run.
+int ProducerBias = 1500; //How much more often the producer will be run.
 
-RingBuff queue;
+RingBuffer queue;
 
 sem_t full = NULL;
 sem_t empty = NULL;
@@ -31,9 +31,9 @@ void *producer(void *threadid) {
 		sem_wait(&mutex);
 
 		char x = 'X';//rand_char();
-		RingBuff_Write(&queue, x);//Writes the letter X to buffer head. 
-		printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuff_OccupiedSpace(&queue));
-		RingBuff_PrintBuffer(&queue);
+		RingBuffer_Write(&queue, x);//Writes the letter X to buffer head. 
+		printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));
+		RingBuffer_Print(&queue);
 		
 		sem_post(&mutex);  
 		sem_post(&full);
@@ -51,9 +51,9 @@ void *consumer(void *threadid) {
 		sem_wait(&full); 	
 		sem_wait(&mutex);
 			
-		char elem = RingBuff_Read(&queue, ' '); //REads the value and replaces it with an empty char. 
-		printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuff_OccupiedSpace(&queue));
-		RingBuff_PrintBuffer(&queue);
+		char elem = RingBuffer_Read(&queue, ' '); //REads the value and replaces it with an empty char. 
+		printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));
+		RingBuffer_Print(&queue);
 		
 		sem_post(&mutex);
 		sem_post(&empty);  
@@ -66,7 +66,7 @@ void *consumer(void *threadid) {
     
 
 int main() {
-	queue = *RingBuff_init(BUFFER_SIZE);
+	queue = *RingBuffer_init(BUFFER_SIZE);
 
 	//queue = queue.Initialize(BUFFER_SIZE);
 	

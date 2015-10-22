@@ -37,10 +37,10 @@
     <ClCompile Include="..\HW2FinalCode\prob3\Semaphore.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\SharedResources.c">
+    <ClCompile Include="..\HW2FinalCode\prob3\Queue.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\prob3\Queue.c">
+    <ClCompile Include="..\HW2FinalCode\Buffer.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

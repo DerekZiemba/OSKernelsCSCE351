@@ -10,7 +10,7 @@
 typedef struct Monitor Monitor;
 
 struct Monitor {
-	RingBuff queue;
+	RingBuffer queue;
 	pthread_cond_t full;
 	pthread_cond_t empty;
 	pthread_mutex_t mutex;
