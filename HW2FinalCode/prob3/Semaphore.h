@@ -4,17 +4,21 @@
 #define SEMAPHORE_H_
 
 #include "../SharedResources.h"
+#include "queue.h"
 
-typedef struct semaphore_t {
+typedef struct CV_t {
+	queue_t queue;
+	queue_t blocked;
+	queue_t active;
 	
 	int sem_blocking_id;
 	int count;
 	int threads_waiting;
-} semaphore;
+} CV;
 
-semaphore* sem_create(int initialCount);
-void sem_signal(semaphore* sem);
-void sem_signal(semaphore* sem);
-void sem_wait(semaphore* sem);
+CV* Semaphore_init(int initialCount);
+int Semaphore_count(CV* sem);
+void Semaphore_signal(CV* sem);
+void Semaphore_wait(CV* sem);
 
-#endif
+#endif

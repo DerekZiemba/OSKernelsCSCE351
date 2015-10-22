@@ -1,10 +1,6 @@
 
 #include "SharedResources.h"
 
-
-pno Initializer(RingBuff *B,int size) {return RingBuff_init(size);}
-//pno Initializer(RingBuff *B, int size) {return RingBuff_init(B, size);}
-
 RingBuff *RingBuff_init(int size) {
 	RingBuff *B = calloc(1, sizeof(RingBuff));	
 	B->size  = size + 1; /* include empty elem */

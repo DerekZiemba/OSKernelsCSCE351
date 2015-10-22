@@ -28,9 +28,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\SharedResources.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\HW2FinalCode\prob3\monitor.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -40,15 +37,24 @@
     <ClCompile Include="..\HW2FinalCode\prob3\Semaphore.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="..\HW2FinalCode\SharedResources.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HW2FinalCode\prob3\Queue.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\HW2FinalCode\SharedResources.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="..\HW2FinalCode\prob3\monitor.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\HW2FinalCode\prob3\Semaphore.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HW2FinalCode\SharedResources.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\HW2FinalCode\prob3\Queue.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
