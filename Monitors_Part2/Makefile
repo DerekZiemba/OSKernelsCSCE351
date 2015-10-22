@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := ../HW2FinalCode/Buffer.c ../HW2FinalCode/prob3/monitor.c ../HW2FinalCode/prob3/pro_con.c ../HW2FinalCode/prob3/Queue.c ../HW2FinalCode/prob3/Semaphore.c
+SOURCEFILES := ../HW2FinalCode/RingBuffer.c ../HW2FinalCode/prob3/monitor.c ../HW2FinalCode/prob3/pro_con.c ../HW2FinalCode/prob3/Queue.c ../HW2FinalCode/prob3/Semaphore.c
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 
@@ -177,7 +177,7 @@ $(BINARYDIR)/%.o : %.cxx $(all_make_files) |$(BINARYDIR)
 #VisualGDB: GeneratedRules				#<--- All lines below are auto-generated
 
 
-$(BINARYDIR)/Buffer.o : ../HW2FinalCode/Buffer.c $(all_make_files) |$(BINARYDIR)
+$(BINARYDIR)/RingBuffer.o : ../HW2FinalCode/RingBuffer.c $(all_make_files) |$(BINARYDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
 
