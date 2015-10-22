@@ -1,39 +1,35 @@
-#include "../SharedResources.h"
+#include "queue.h"
 
-/*Pass 0 for unrestrained queue*/
-Queue *Queue_init(uint maxsize) {
-	Queue *q = (Queue *) calloc(1, sizeof(queue_t));
-	q->size = maxsize;
-	q->count = 0;
-	return q;
+queue_t *Queue_init() {
+	queue_t *queue = (queue_t *) calloc(1,sizeof(queue_t));
+	return queue;
 }
 
-void Enqueue(Queue *q, void *data) {
-	if (q->count >= q->size) {
-		printf("ERROR QUEUE IS FULL CANNOT ADD NOW\n");
-		return;
-	}
+void Enqueue(queue_t *queue, void *data){
 	node_t  *elem = (node_t *)calloc(1,sizeof(node_t));
 	elem->data = data;
 	elem->next = NULL;
     
-	if (q->head == NULL) q->head = elem;
-	else q->tail->next = elem;
+	if (queue->head == NULL)
+		queue->head = elem;
+	else
+		queue->tail->next = elem;
 	
-	q->tail = elem;
-	q->count++;
+	queue->tail = elem;
+	queue->size++;
 }
 
 
-void *Dequeue(Queue *q) {
-	void *data = NULL;
+void *Dequeue(queue_t *queue){
+	void    *data = NULL;
     
-	if (q->count != 0) {
-		node_t *elem = q->head;
-		if (q->count == 1) q->tail = NULL;
+	if (queue->size != 0){
+		node_t *elem = queue->head;
+		if (queue->size == 1)
+			queue->tail = NULL;
 		
-		q->head = q->head->next;       
-		q->count--;
+		queue->head = queue->head->next;       
+		queue->size--;
 		
 		data = elem->data;
 		free(elem);
@@ -41,12 +37,4 @@ void *Dequeue(Queue *q) {
         
 	return data;
 }
-//
-//uint Queue_Count(Queue *q) {
-	//if (q->head != NULL) {
-		//uint i = 1;
-		//node_t *root = q->head;
-		//while (root->next != NULL) { i++; root = root->next; }
-	//}
-	//return 0;
-//}
+

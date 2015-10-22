@@ -62,5 +62,5 @@ CV* Semaphore_init(int initialCount) {
 //}
 
 int Semaphore_count(CV* sem) {
-	return (sem->blocked).count;
+	return (sem->blocked).size;
 }
