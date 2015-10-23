@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := ../HW2FinalCode/prob3/monitor.c ../HW2FinalCode/prob3/pro_con.c ../HW2FinalCode/prob3/Queue.c ../HW2FinalCode/prob3/Semaphore.c ../HW2FinalCode/RingBuffer.c
+SOURCEFILES := ../HW2FinalCode/prob3/monitor.c ../HW2FinalCode/prob3/pro_con.c ../HW2FinalCode/prob3/Queue.c ../HW2FinalCode/RingBuffer.c
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 
@@ -186,10 +186,6 @@ $(BINARYDIR)/pro_con.o : ../HW2FinalCode/prob3/pro_con.c $(all_make_files) |$(BI
 
 
 $(BINARYDIR)/Queue.o : ../HW2FinalCode/prob3/Queue.c $(all_make_files) |$(BINARYDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
-
-
-$(BINARYDIR)/Semaphore.o : ../HW2FinalCode/prob3/Semaphore.c $(all_make_files) |$(BINARYDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
 

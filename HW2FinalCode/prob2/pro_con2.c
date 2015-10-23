@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "../SharedResources.h"
-#include "monitor.h"
+#include "monitor2.h"
 
 #define HARD_DELAY 1000
 

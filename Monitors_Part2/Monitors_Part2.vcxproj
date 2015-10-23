@@ -12,6 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4A17FA5A-A2D2-4AB1-9DBA-D4D592EABBCE}</ProjectGuid>
+    <ProjectName>Prob3_Monitors</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -68,13 +69,13 @@
     <None Include="release.mak" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\prob3\monitor.c" />
-    <ClCompile Include="..\HW2FinalCode\prob3\pro_con.c" />
+    <ClCompile Include="..\HW2FinalCode\prob3\monitor3.c" />
+    <ClCompile Include="..\HW2FinalCode\prob3\pro_con3.c" />
     <ClCompile Include="..\HW2FinalCode\prob3\Queue.c" />
     <ClCompile Include="..\HW2FinalCode\RingBuffer.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\HW2FinalCode\prob3\monitor.h" />
+    <ClInclude Include="..\HW2FinalCode\prob3\monitor3.h" />
     <ClInclude Include="..\HW2FinalCode\SharedResources.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

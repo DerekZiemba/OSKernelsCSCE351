@@ -28,21 +28,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\prob2\monitor.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\prob2\pro_con.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\HW2FinalCode\RingBuffer.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HW2FinalCode\prob2\monitor2.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HW2FinalCode\prob2\pro_con2.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\HW2FinalCode\prob2\monitor.h">
+    <ClInclude Include="..\HW2FinalCode\SharedResources.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\HW2FinalCode\SharedResources.h">
+    <ClInclude Include="..\HW2FinalCode\prob2\monitor2.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
