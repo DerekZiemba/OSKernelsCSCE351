@@ -34,9 +34,6 @@
     <ClCompile Include="..\HW2FinalCode\prob3\pro_con.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\prob3\Semaphore.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\HW2FinalCode\prob3\Queue.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -46,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\HW2FinalCode\prob3\monitor.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\HW2FinalCode\prob3\Semaphore.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\HW2FinalCode\SharedResources.h">

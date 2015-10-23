@@ -9,7 +9,7 @@ Queue *Queue_init(uint maxsize) {
 }
 
 void Enqueue(Queue *q, void *data) {
-	if (q->count >= q->size) {
+	if (!q->size==0 || q->count >= q->size) {
 		printf("ERROR QUEUE IS FULL CANNOT ADD NOW\n");
 		return;
 	}

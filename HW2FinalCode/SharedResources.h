@@ -4,6 +4,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <signal.h>
+#include <setjmp.h>
+#include <unistd.h>
+#include <pthread.h>
+
 
 /***************************************************************************
 * Booleans

@@ -6,7 +6,7 @@ bool bMonInited = false;
 
 
 Monitor *Monitor_init() {
-	bMonInited = 1;
+	bMonInited = true;
 	
 	Monitor *B = calloc(1, sizeof(Monitor));	
 	B->queue = *RingBuffer_init(BUFFER_SIZE);
@@ -20,9 +20,8 @@ Monitor *Monitor_init() {
 
 
 void mon_insert(char alpha) {	
-	if (!bMonInited) {
+	if (!bMonInited) 
 		mon = *Monitor_init();
-	}
 	
 	pthread_mutex_lock(&mon.mutex);
 		
