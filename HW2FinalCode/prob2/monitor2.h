@@ -1,7 +1,5 @@
 #pragma  once
-#include <stdlib.h>
 #include <stdio.h>
-#include <pthread.h>
 #include "../SharedResources.h"
 
 #define BUFFER_SIZE 80

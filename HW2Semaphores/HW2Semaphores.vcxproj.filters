@@ -19,13 +19,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Makefile" />
     <None Include="debug.mak">
       <Filter>Make files</Filter>
     </None>
     <None Include="release.mak">
       <Filter>Make files</Filter>
     </None>
+    <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\HW2FinalCode\prob1\prob1.c">
