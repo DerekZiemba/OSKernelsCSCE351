@@ -54,6 +54,9 @@ int main() {
 		pthread_create(&consumers[i], NULL, &consumer, (void *) taskids[id]);		
 	}
 	
+	pthread_t x = producers[0];
+	x->
+	
 	for (i = 0; i < NUM_THREADS; i++) {
 		pthread_join(producers[i], NULL);		
 	}

@@ -51,7 +51,7 @@ typedef struct node_type {
 } node_t;
 
 typedef struct Queue Queue;
-struct Queue {
+typedef struct Queue {
 	uint		size;
 	uint		count;
 	node_t		*head;
@@ -84,6 +84,16 @@ static uint Queue_Count(Queue *q){return q->count;};
 /*The queue is technically a linked list without a limit, but I'm limiting it by the size so it can replace ringbuffer and I can test it easier*/
 static bool Queue_IsFull(Queue *q) {return (q->size - q->count == 0) ? true : false;}
 static bool Queue_IsEmpty(Queue *q) {return (q->count) ? false : true;}
+
+static bool Queue_GetNext(Queue *q, node_t *n) {
+	if (n == NULL) return false;
+	if (n->data != NULL) {
+		char c = (char*)n->data;
+
+		printf("%c", c);
+		Node_Print(n->next);
+	}
+}
 
 
 Queue *Queue_init();

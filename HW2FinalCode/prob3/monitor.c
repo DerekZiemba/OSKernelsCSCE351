@@ -1,16 +1,49 @@
 #include "monitor.h"
 #include "../SharedResources.h"
 
+Monitor mon;
+bool bMonInited = false;
+
 CV* CV_init(int initialCount) {
 	CV* CV = calloc(1, sizeof(CV));
 	CV->blocked = *Queue_init();
 	return CV;
 }
 
-Monitor mon;
-bool bMonInited = false;
+inline static int CV_count(CV* sem) {	return (sem->blocked).count;}
 
-Monitor *Monitor_init() {
+void CV_signal(CV* sem);
+void CV_wait(CV* sem);
+
+static void signal_handler(int sig) {
+	bool fullCond = (&mon.full)->condition;
+	bool emptyCond = (&mon.empty)->condition;
+
+	if(sig==SIGINT || sig == SIGALRM) {
+		if (fullCond) {			
+			Queue q = (&mon.full)->blocked;
+			if(!Queue_IsEmpty(&q)) {				
+				node_t *node = q.head;
+				Semaphore *sem = (Semaphore*) node->data;
+				jmp_buf *context = &sem->context;
+				longjmp(*context, sig);					
+			}
+		}
+		else if(emptyCond) {
+			Queue q = (&mon.empty)->blocked;
+			if (!Queue_IsEmpty(&q)) {				
+				node_t *node = q.head;
+				Semaphore *sem = (Semaphore*) node->data;
+				jmp_buf *context = &sem->context;
+				longjmp(*context, sig);					
+			}
+		}	
+	}
+	exit(sig);		
+}
+
+
+Monitor *Monitor_init(int timerMilliSecs) {
 	bMonInited = true;	
 	Monitor *B = calloc(1, sizeof(Monitor));	
 	
@@ -21,9 +54,14 @@ Monitor *Monitor_init() {
 	B->producers = calloc(NUM_THREADS, sizeof(pthread_t));
 	B->consumers = calloc(NUM_THREADS, sizeof(pthread_t));
 	
+	signal(SIGINT, signal_handler);
+	signal(SIGALRM, signal_handler);
+	ualarm(100*timerMilliSecs);
+	while(true) {
+		sleep(1);
+	}
 	return B;
 }
-
 
 void mon_insert(char alpha) {
 	if (!bMonInited) 
@@ -65,42 +103,25 @@ char mon_remove(char replacementChar) {
 	return value;
 }
 
-
-
-jmp_buf env;
-
-
-
-int CV_count(CV* sem) {	return (sem->blocked).count;}
-
 // It performs the CV's signal operation.
 void CV_signal(CV* sem) {
-	//DISABLE_INTERRUPTS();
-	int blocked_threads = CV_count(sem);
-	if (blocked_threads > 0) {//<= or >=
-		int i = 0;
-		for (i = 0; i <= blocked_threads; i++) {
-			node_t blocked_node = *(node_t *) Dequeue(&sem->blocked);
-			Semaphore context = (Semaphore *) blocked_node.data;	
-			
-		}
-		heads[sem->sem_blocking_id];
-		if (blocked_node != NULL) {
-			Node * new_node = (Node *) malloc(sizeof(Node));
-			new_node->thread = blocked_node->thread;
-
-			new_node->thread.scheduling_status = READY;
-			remove_node(blocked_node, sem->sem_blocking_id);
-			add_node(new_node, READY);
-			sem->threads_waiting = sem->threads_waiting - 1;
-			printf("Unblocked: %d\nThreads waiting: %d\n", blocked_node->thread.thread_id, sem->threads_waiting);
-		}
+	//DISABLE_INTERRUPTS();.
+	sem->condition = true;	
+	Queue q = &sem->blocked;
+	if (!Queue_IsEmpty(&q)) {				
+		node_t *node = q.head;
+		while(node != NULL && node->data != NULL) {
+			Semaphore *sem = (Semaphore*) node->data;			
+			int sig= setjmp(&sem->context);
+		}			
 	}
 }
 //
 // It performs the CV's wait operation.
 void CV_wait(CV* sem) {
 //	DISABLE_INTERRUPTS();
+	
+	
 	sem->count = sem->count - 1;
 
 	printf("Wait on CV. Updated count: %d\n", sem->count);

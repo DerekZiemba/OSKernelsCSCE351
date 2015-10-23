@@ -6,7 +6,6 @@
 #define BUFFER_SIZE 80
 #define NUM_THREADS 8
 
-
 typedef struct Cond {
 	Queue blocked;
 	bool condition;
@@ -31,15 +30,8 @@ void mon_insert(char alpha);
 char mon_remove(char replacementChar);
 Monitor *Monitor_init();
 
-int CV_count(CV* sem);
-void CV_signal(CV* sem);
-void CV_wait(CV* sem);
 
-static void signal_handler(int sig) {
-	switch (sig) {
-	case SIGINT:
-		
-	}
-}
+
+
 
 
