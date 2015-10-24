@@ -19,4 +19,4 @@ HW2: GCC command line build commands.  Execute from the HW2FinalCode directory.
     
   Problem 3:
   
-    gcc prob3/pro_con3.c prob3/monitor3.h prob2/monitor3.c SharedResources.h SharedResources.c -O0 -o prob3/prob3
+    gcc prob3/pro_con3.c prob3/monitor3.h prob3/monitor3.c SharedResources.h SharedResources.c -O0 -o prob3/prob3
