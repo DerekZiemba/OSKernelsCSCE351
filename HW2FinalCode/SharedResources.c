@@ -89,28 +89,28 @@ void *Dequeue(Queue *q) {
 	return data;
 }
 
-void Queue_Print(Queue *q) {
-	if (q->head != NULL) {
-		node_t *elem = q->head;
-		elem->Print(elem);
-	}
-	printf("\n");
-}
-
-void Node_Print(node_t *n) {
-	if (n == NULL) return;
-	if (n->data != NULL) {
-		char c = (char*) n->data;
-		printf("%c", c);
-		Node_Print(n->next);
-	}	
-}
+//void Queue_Print(Queue *q) {
+	//if (q->head != NULL) {
+		//node_t *elem = q->head;
+		//elem->Print(elem);
+	//}
+	//printf("\n");
+//}
+//
+//void Node_Print(node_t *n) {
+	//if (n == NULL) return;
+	//if (n->data != NULL) {
+		//char c = (char*) n->data;
+		//printf("%c", c);
+		//Node_Print(n->next);
+	//}	
+//}
 
 node_t *Node_init(void *data) {
 	node_t  *elem = (node_t *)calloc(1, sizeof(node_t));
 	elem->data = data;
 	elem->next = NULL;   
-	elem->Print = Node_Print;
+	//elem->Print = Node_Print;
 	return elem;
 }
 
@@ -122,7 +122,7 @@ Queue *Queue_init(uint maxsize) {
 	q->IsEmpty = Queue_IsEmpty;
 	q->Enqueue = Enqueue;
 	q->Dequeue = Dequeue;
-	q->Print = Queue_Print;
+	//q->Print = Queue_Print;
 	return q;
 }
 

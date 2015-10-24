@@ -1,4 +1,4 @@
-#pragma  once
+
 #include <stdio.h>
 #include "../SharedResources.h"
 #include <semaphore.h>

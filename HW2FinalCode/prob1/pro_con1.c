@@ -3,15 +3,15 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include "..\SharedResources.h"
+#include "../SharedResources.h"
 
-#define HARD_DELAY 1000
+#define HARD_DELAY 800
 
 /*positive 800 does a really good job of showing a full buffer 
  *negative 500 does pretty good at showing an empty buffer */
 /*It's interesting to see not all threads will get equal time. For instance, 
 * Moving the window around or doing some background task affects the buffer.*/
-int ProducerBias = 1500; //How much more often the producer will be run.
+int ProducerBias = 500; //How much more often the producer will be run.
 
 RingBuffer queue;
 
@@ -31,7 +31,7 @@ void *producer(void *threadid) {
 		char x = 'X';//rand_char();
 		queue.Write(&queue, x);
 		if (PRINT_ADDITIONAL_INFO)
-			printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));
+			printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, queue.Count(&queue));
 		
 		if (PRINT_BUFFER_ON_INSERT)	
 			queue.Print(&queue);
@@ -54,7 +54,7 @@ void *consumer(void *threadid) {
 
 		char elem = queue.Read(&queue, ' ');//REads the value and replaces it with an empty char. 
 		if (PRINT_ADDITIONAL_INFO)
-			printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));	
+			printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, queue.Count(&queue));
 		
 		if (PRINT_BUFFER_ON_REMOVE)	
 			queue.Print(&queue);
