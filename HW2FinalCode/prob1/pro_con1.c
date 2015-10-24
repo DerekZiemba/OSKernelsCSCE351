@@ -5,8 +5,6 @@
 #include <semaphore.h>
 #include "..\SharedResources.h"
 
-#define NUM_THREADS 8
-#define BUFFER_SIZE 100
 #define HARD_DELAY 1000
 
 /*positive 800 does a really good job of showing a full buffer 
@@ -31,9 +29,12 @@ void *producer(void *threadid) {
 		sem_wait(&mutex);
 
 		char x = 'X';//rand_char();
-		RingBuffer_Write(&queue, x);//Writes the letter X to buffer head. 
-		printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));
-		RingBuffer_Print(&queue);
+		queue.Write(&queue, x);
+		if (PRINT_ADDITIONAL_INFO)
+			printf("producer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));
+		
+		if (PRINT_BUFFER_ON_INSERT)	
+			queue.Print(&queue);
 		
 		sem_post(&mutex);  
 		sem_post(&full);
@@ -50,10 +51,13 @@ void *consumer(void *threadid) {
 	while (1) {		
 		sem_wait(&full); 	
 		sem_wait(&mutex);
-			
-		char elem = RingBuffer_Read(&queue, ' '); //REads the value and replaces it with an empty char. 
-		printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));
-		RingBuffer_Print(&queue);
+
+		char elem = queue.Read(&queue, ' ');//REads the value and replaces it with an empty char. 
+		if (PRINT_ADDITIONAL_INFO)
+			printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuffer_Count(&queue));	
+		
+		if (PRINT_BUFFER_ON_REMOVE)	
+			queue.Print(&queue);
 		
 		sem_post(&mutex);
 		sem_post(&empty);  
@@ -68,12 +72,9 @@ void *consumer(void *threadid) {
 int main() {
 	queue = *RingBuffer_init(BUFFER_SIZE);
 
-	//queue = queue.Initialize(BUFFER_SIZE);
-	
 	sem_init(&full, 0, 0);
 	sem_init(&empty, 0, BUFFER_SIZE);
 	sem_init(&mutex, 0, 1);
-	//pthread_mutex_init(&mutex, 0);
 	
 	pthread_t producers[NUM_THREADS];
 	pthread_t consumers[NUM_THREADS];
@@ -91,7 +92,6 @@ int main() {
 		taskids[i] = i;	
 		pthread_create(&producers[i], NULL, &producer, (void *) taskids[i]);	
 	}
-
 	
 	for (i = 0; i < NUM_THREADS; i++) {
 		pthread_join(producers[i], NULL);		

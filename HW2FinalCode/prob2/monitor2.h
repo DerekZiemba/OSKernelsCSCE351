@@ -2,12 +2,10 @@
 #include <stdio.h>
 #include "../SharedResources.h"
 
-#define BUFFER_SIZE 80
-#define NUM_THREADS 8
-
 typedef struct Monitor Monitor;
 
 struct Monitor {
+	bool bIsInitialized;
 	RingBuffer queue;
 	pthread_cond_t full;
 	pthread_cond_t empty;

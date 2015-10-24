@@ -1,26 +1,21 @@
 #pragma  once
-#include <stdlib.h>
 #include <stdio.h>
 #include "../SharedResources.h"
+#include <semaphore.h>
 
-#define BUFFER_SIZE 80
-#define NUM_THREADS 8
-
-typedef struct Cond {
-	Queue blocked;
-	bool condition;
-} CV;
-
-typedef struct Semaphore_t {
-	jmp_buf context;
-} Semaphore;
-
+typedef struct cond_t {
+	//Queue blockedThreads;
+	int nWaitingThreads; 
+	sem_t threadSemaphore;
+	uint(*count)(struct cond_t *self);
+} cond;
 
 typedef struct Monitor_t {
+	bool bIsInitialized;
 	RingBuffer queue;
-	CV full;
-	CV empty;
-	pthread_mutex_t mutex;
+	cond full;
+	cond empty;
+	sem_t mutex;
 	pthread_t *producers;
 	pthread_t *consumers;
 } Monitor;
@@ -28,10 +23,6 @@ typedef struct Monitor_t {
 
 void mon_insert(char alpha);
 char mon_remove(char replacementChar);
+
 Monitor *Monitor_init();
-
-
-
-
-
 

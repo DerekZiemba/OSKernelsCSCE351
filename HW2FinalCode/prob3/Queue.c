@@ -41,12 +41,26 @@ void *Dequeue(Queue *q) {
         
 	return data;
 }
+
+void Queue_Print(Queue *q) {
+	if (q->head != NULL) {
+		node_t *elem = q->head;
+		Node_Print(elem);
+	}
+	printf("\n");
+}
+
+void Node_Print(node_t *n) {
+	if (n == NULL) return;
+	if (n->data != NULL) {
+		char c = (char*) n->data;
+		printf("%c", c);
+		Node_Print(n->next);
+	}	
+}
+
+
+
+
 //
-//uint Queue_Count(Queue *q) {
-	//if (q->head != NULL) {
-		//uint i = 1;
-		//node_t *root = q->head;
-		//while (root->next != NULL) { i++; root = root->next; }
-	//}
-	//return 0;
-//}
+

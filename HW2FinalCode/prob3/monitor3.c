@@ -2,141 +2,91 @@
 #include "../SharedResources.h"
 
 Monitor mon;
-bool bMonInited = false;
 
-CV* CV_init(int initialCount) {
-	CV* CV = calloc(1, sizeof(CV));
-	CV->blocked = *Queue_init();
-	return CV;
+/***************************************************************************
+* Condition
+****************************************************************************/
+uint count(cond *self) {	return (self->nWaitingThreads);}
+
+void cond_signal(cond* c) {
+	if (c->nWaitingThreads) {
+		c->nWaitingThreads--;
+		sem_post(&mon.mutex);
+		sem_post(&c->threadSemaphore);
+		sem_wait(&mon.mutex);
+	}
 }
 
-inline static int CV_count(CV* sem) {	return (sem->blocked).count;}
+void cond_wait(cond* c) {
+	c->nWaitingThreads++;
+	sem_post(&mon.mutex);
+	sem_wait(&c->threadSemaphore);
+	sem_wait(&mon.mutex);		
+}
 
-void CV_signal(CV* sem);
-void CV_wait(CV* sem);
-
-static void signal_handler(int sig) {
-	bool fullCond = (&mon.full)->condition;
-	bool emptyCond = (&mon.empty)->condition;
-
-	if(sig==SIGINT || sig == SIGALRM) {
-		if (fullCond) {			
-			Queue q = (&mon.full)->blocked;
-			if(!Queue_IsEmpty(&q)) {				
-				node_t *node = q.head;
-				Semaphore *sem = (Semaphore*) node->data;
-				jmp_buf *context = &sem->context;
-				longjmp(*context, sig);					
-			}
-		}
-		else if(emptyCond) {
-			Queue q = (&mon.empty)->blocked;
-			if (!Queue_IsEmpty(&q)) {				
-				node_t *node = q.head;
-				Semaphore *sem = (Semaphore*) node->data;
-				jmp_buf *context = &sem->context;
-				longjmp(*context, sig);					
-			}
-		}	
-	}
-	exit(sig);		
+cond* Cond_init() {
+	cond* c = calloc(1, sizeof(c));
+	//c->nWaitingThreads = *Queue_init();
+	c->nWaitingThreads = 0;
+	sem_init(&c->threadSemaphore, 0, 1);
+	c->count = count;
+	return c;
 }
 
 
-Monitor *Monitor_init(int timerMilliSecs) {
-	bMonInited = true;	
-	Monitor *B = calloc(1, sizeof(Monitor));	
+/***************************************************************************
+* Monitor
+****************************************************************************/
+Monitor *Monitor_init() {
+	Monitor *m = calloc(1, sizeof(Monitor));	
 	
-	B->queue = *RingBuffer_init(BUFFER_SIZE);
-	B->full = *CV_init(0);
-	B->empty = *CV_init(0);
-	pthread_mutex_init(&B->mutex, NULL);	
-	B->producers = calloc(NUM_THREADS, sizeof(pthread_t));
-	B->consumers = calloc(NUM_THREADS, sizeof(pthread_t));
+	m->queue = *RingBuffer_init(BUFFER_SIZE);
+	m->full = *Cond_init();
+	m->empty = *Cond_init();
+	sem_init(&m->mutex,0,1);
+	m->producers = calloc(NUM_THREADS, sizeof(pthread_t));
+	m->consumers = calloc(NUM_THREADS, sizeof(pthread_t));
+	m->bIsInitialized = true;
 	
-	signal(SIGINT, signal_handler);
-	signal(SIGALRM, signal_handler);
-	ualarm(100*timerMilliSecs);
-	while(true) {
-		sleep(1);
-	}
-	return B;
+	return m;
 }
 
 void mon_insert(char alpha) {
-	if (!bMonInited) 
+	if(!mon.bIsInitialized)
 		mon = *Monitor_init();
 	
-	pthread_mutex_lock(&mon.mutex);
-		
-	bool isFull = RingBuffer_IsFull(&mon.queue);
-	if(isFull) {
-		//Broadcast to threads that are currently suspended and waiting on the full condition they can start
-		pthread_cond_broadcast(&mon.full); 
-		//Suspend this thread until the threads that just started broadcast the empty condition. 
-		pthread_cond_wait(&mon.empty, &mon.mutex);	
+	sem_wait(&mon.mutex);	
+
+	if(mon.queue.Count(&mon.queue) >= (mon.queue.size-NUM_THREADS)) {
+		cond_wait(&mon.full);
 	}
 	
-	RingBuffer_Write(&mon.queue, alpha);
-	RingBuffer_Print(&mon.queue);	
+	mon.queue.Write(&mon.queue, alpha);
 	
-	//Enqueue(&mon.queue, (void*)alpha);
-	//Queue_Print(&mon.queue);		
-	pthread_mutex_unlock(&mon.mutex);	
+	if (PRINT_BUFFER_ON_INSERT)	
+		mon.queue.Print(&mon.queue);
+
+	sem_post(&mon.mutex);
 }
 	
 char mon_remove(char replacementChar) {
-	if (!bMonInited) 
+	if (!mon.bIsInitialized)
 		printf("MONITOR NOT INITIALIZED");
 	
-	pthread_mutex_lock(&mon.mutex);
-	
-	bool isEmpty = RingBuffer_IsEmpty(&mon.queue);
-	if (isEmpty) {		
-		pthread_cond_broadcast(&mon.empty); //Tell the threads that are waiting on empty condition to start
-		pthread_cond_wait(&mon.full, &mon.mutex);//Wait for those threads to broadcast the full condition.	
+	sem_wait(&mon.mutex);	
+
+	if (mon.queue.Count(&mon.queue) <= NUM_THREADS) {		
+		cond_wait(&mon.empty);
 	}
 
 	//char value = (char*)Dequeue(&mon.queue);
-	char value = RingBuffer_Read(&mon.queue, ' ');
-	pthread_mutex_unlock(&mon.mutex);
+	char value = mon.queue.Read(&mon.queue, ' ');
+	
+	cond_signal(&mon.full);
+	sem_post(&mon.mutex);
 	return value;
 }
 
-// It performs the CV's signal operation.
-void CV_signal(CV* sem) {
-	//DISABLE_INTERRUPTS();.
-	sem->condition = true;	
-	Queue q = &sem->blocked;
-	if (!Queue_IsEmpty(&q)) {				
-		node_t *node = q.head;
-		while(node != NULL && node->data != NULL) {
-			Semaphore *sem = (Semaphore*) node->data;			
-			int sig= setjmp(&sem->context);
-		}			
-	}
-}
-//
-// It performs the CV's wait operation.
-void CV_wait(CV* sem) {
-//	DISABLE_INTERRUPTS();
-	
-	
-	sem->count = sem->count - 1;
 
-	printf("Wait on CV. Updated count: %d\n", sem->count);
-	if (sem->count < 0) {
-		running_thread[1]->thread.scheduling_status = sem->sem_blocking_id;
-		sem->threads_waiting = sem->threads_waiting + 1;
-		printf("Blocked: %d\nThreads waiting: %d\n", running_thread[1]->thread.thread_id, sem->threads_waiting);
-
-	}
-	//ENABLE_INTERRUPTS();
-	// Wait for interrupt if blocked
-	int i = 0;
-	while (running_thread[1]->thread.scheduling_status == sem->sem_blocking_id)
-		for (i = 0; i < MAX; i++)
-			;
-}
 
 

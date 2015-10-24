@@ -28,10 +28,10 @@
     <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\prob1\prob1.c">
+    <ClCompile Include="..\HW2FinalCode\prob1\pro_con1.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\RingBuffer.c">
+    <ClCompile Include="..\HW2FinalCode\SharedResources.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

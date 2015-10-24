@@ -71,8 +71,7 @@
   <ItemGroup>
     <ClCompile Include="..\HW2FinalCode\prob3\monitor3.c" />
     <ClCompile Include="..\HW2FinalCode\prob3\pro_con3.c" />
-    <ClCompile Include="..\HW2FinalCode\prob3\Queue.c" />
-    <ClCompile Include="..\HW2FinalCode\RingBuffer.c" />
+    <ClCompile Include="..\HW2FinalCode\SharedResources.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\HW2FinalCode\prob3\monitor3.h" />

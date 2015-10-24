@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{DF
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Signal", "Examples\Signal\Signal.vcxproj", "{A8195035-1CF4-41FE-8CA8-689F5808262F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleMonitor", "Examples\SimpleMonitor\SimpleMonitor.vcxproj", "{7976B901-7DFB-4AD4-863A-AE2CCA040FE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -44,6 +46,10 @@ Global
 		{A8195035-1CF4-41FE-8CA8-689F5808262F}.Debug|x86.Build.0 = Debug|Win32
 		{A8195035-1CF4-41FE-8CA8-689F5808262F}.Release|x86.ActiveCfg = Release|Win32
 		{A8195035-1CF4-41FE-8CA8-689F5808262F}.Release|x86.Build.0 = Release|Win32
+		{7976B901-7DFB-4AD4-863A-AE2CCA040FE4}.Debug|x86.ActiveCfg = Debug|Win32
+		{7976B901-7DFB-4AD4-863A-AE2CCA040FE4}.Debug|x86.Build.0 = Debug|Win32
+		{7976B901-7DFB-4AD4-863A-AE2CCA040FE4}.Release|x86.ActiveCfg = Release|Win32
+		{7976B901-7DFB-4AD4-863A-AE2CCA040FE4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +61,6 @@ Global
 		{4A17FA5A-A2D2-4AB1-9DBA-D4D592EABBCE} = {949F9E1D-98F7-4711-9BF5-0AB686A60BAF}
 		{DF6BB527-3043-4D8D-8590-5915DEB8364A} = {949F9E1D-98F7-4711-9BF5-0AB686A60BAF}
 		{A8195035-1CF4-41FE-8CA8-689F5808262F} = {DF6BB527-3043-4D8D-8590-5915DEB8364A}
+		{7976B901-7DFB-4AD4-863A-AE2CCA040FE4} = {DF6BB527-3043-4D8D-8590-5915DEB8364A}
 	EndGlobalSection
 EndGlobal

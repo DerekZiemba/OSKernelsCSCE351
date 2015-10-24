@@ -71,7 +71,7 @@
   <ItemGroup>
     <ClCompile Include="..\HW2FinalCode\prob2\monitor2.c" />
     <ClCompile Include="..\HW2FinalCode\prob2\pro_con2.c" />
-    <ClCompile Include="..\HW2FinalCode\RingBuffer.c" />
+    <ClCompile Include="..\HW2FinalCode\SharedResources.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\HW2FinalCode\prob2\monitor2.h" />

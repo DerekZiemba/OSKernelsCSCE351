@@ -28,16 +28,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HW2FinalCode\prob3\Queue.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\HW2FinalCode\RingBuffer.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\HW2FinalCode\prob3\monitor3.c">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\HW2FinalCode\prob3\pro_con3.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\HW2FinalCode\SharedResources.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,7 +4,7 @@
 #include "../SharedResources.h"
 #include "monitor2.h"
 
-#define HARD_DELAY 1000
+#define HARD_DELAY 800
 
 // Provided thread code
 void *producer(void *threadid) {
@@ -27,7 +27,8 @@ void *consumer(void *threadid) {
 	while (1) {		
 		char alpha = mon_remove(' ');
 		//printf("REMOVED Char %c, ThreadID: %lu, Iteration: %d\n", alpha, thread_id, iteration);
-		printf("removed char: %c\n", alpha);
+		if(PRINT_ADDITIONAL_INFO)
+			printf("removed char: %c\n", alpha);
 		//printf("consumer: ThreadID = %lu. Iteration = %d. BufferSize = %d\n", thread_id, iteration, RingBuff_OccupiedSpace(&ringbuf));
 		hardDelay(HARD_DELAY);
 		iteration++;
