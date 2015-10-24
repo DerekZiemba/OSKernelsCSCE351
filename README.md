@@ -4,8 +4,8 @@ Build Environment:
 - Windows 7 Virtual Machine in VMWare Workstation
 - Cygwin64 
 - Visual Studio 2015 
-- VisualGDB (30-day trial) Extension set to use GCC 4.9.3-1 with Clang Intellisense 
-  --> Use a VM and create a Snapshot before installing VisualGDB. 
+- VisualGDB Extension set to use GCC 4.9.3-1 with Clang Intellisense 
+
 
 HW2: GCC command line build commands.  Execute from the HW2FinalCode directory.
 
