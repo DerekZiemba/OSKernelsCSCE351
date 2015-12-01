@@ -6,7 +6,8 @@ typedef struct Monitor Monitor;
 
 struct Monitor {
 	bool bIsInitialized;
-	RingBuffer queue;
+	//RingBuffer queue;
+	Queue queue;
 	pthread_cond_t full;
 	pthread_cond_t empty;
 	pthread_mutex_t mutex;

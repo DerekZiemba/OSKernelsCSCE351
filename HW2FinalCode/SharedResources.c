@@ -55,76 +55,204 @@ RingBuffer *RingBuffer_init(int size) {
 
 
 /***************************************************************************
-* Linked List Queue
+* Generic Linked List Queue
 ****************************************************************************/
-/*The queue is technically a linked list without a limit, 
-* but I'm limiting it by the size so it can replace ringbuffer and I can test it easier
-* Passing in 0 will make it infinit*/
-bool Queue_IsFull(Queue *q) {return (q->size - q->count == 0) ? true : false;}
-bool Queue_IsEmpty(Queue *q) {return (q->count) ? false : true;}
-
-void Enqueue(Queue *q, void *data) {
-	if (!q->size == 0 || q->count >= q->size) {
-		printf("ERROR QUEUE IS FULL CANNOT ADD NOW\n");
-		return;
-	}
-	node_t  *elem = Node_init(data);
-	if (q->head == NULL) q->head = elem;
-	else q->tail->next = elem;	
-	q->tail = elem;
-	q->count++;
-}
-
-
-void *Dequeue(Queue *q) {
-	void *data = NULL;   
-	if (q->count != 0) {
-		node_t *elem = q->head;
-		if (q->count == 1) q->tail = NULL;		
-		q->head = q->head->next;       
-		q->count--;		
-		data = elem->data;
-		free(elem);
-	}       
-	return data;
-}
-
-//void Queue_Print(Queue *q) {
-	//if (q->head != NULL) {
-		//node_t *elem = q->head;
-		//elem->Print(elem);
-	//}
-	//printf("\n");
-//}
-//
-//void Node_Print(node_t *n) {
-	//if (n == NULL) return;
-	//if (n->data != NULL) {
-		//char c = (char*) n->data;
-		//printf("%c", c);
-		//Node_Print(n->next);
-	//}	
-//}
-
 node_t *Node_init(void *data) {
-	node_t  *elem = (node_t *)calloc(1, sizeof(node_t));
+	node_t  *elem = calloc(1, sizeof(node_t));
 	elem->data = data;
-	elem->next = NULL;   
-	//elem->Print = Node_Print;
+	elem->parentNode = NULL;
+	elem->childNode = NULL;
 	return elem;
 }
 
-Queue *Queue_init(uint maxsize) {
-	Queue *q = (Queue *) calloc(1, sizeof(Queue));
-	q->size = maxsize;
+/*This was just an experiment.
+ *  Wanted it to work for all and be used in the likes of SearchChildNodesByThreadID
+ *  but I couldn't get things to cast back correctly.
+ *   Also the GCC version used by altera doesn't allow trampolines which was essential for this.
+ *   trampolines = functions inside of functions like javascript.  Just found out what those are a few minutes ago */
+void Node_Iterator(node_t *n, bool(*callback)(node_t* data, void* context), void *context) {
+	if (n == NULL) return;
+	if (n->data != NULL) {
+		if (callback(n, context)) {
+			Node_Iterator(n->childNode, callback, context);
+		}
+	}
+}
+
+
+
+/*The queue is technically a linked list without a limit,
+* but I'm limiting it by the size so it can replace ringbuffer and I can test it easier
+* Passing in 0 will make it infinit*/
+Queue *Queue_init(uint32_t maxsize) {
+	Queue *q = calloc(1, sizeof(Queue));
+	q->maxsize = maxsize;
 	q->count = 0;
-	q->IsFull = Queue_IsFull;
-	q->IsEmpty = Queue_IsEmpty;
-	q->Enqueue = Enqueue;
-	q->Dequeue = Dequeue;
-	//q->Print = Queue_Print;
 	return q;
 }
+
+
+void Queue_Enqueue(Queue *q, void *data) {
+	if (q->maxsize == 0) {
+		//This is a limitless Queue
+	}
+	else if(q->count < 0 || q->maxsize < 0) {
+		printf("ERROR: Invalid Pointer To Queue\n");
+		return;
+	}
+	else if (q->count >= q->maxsize) {
+		printf("ERROR: Queue is Full\n");
+		return;
+	}
+	node_t  *elem = Node_init(data);
+	if (q->count == 0) {
+		q->firstNode = elem;
+		q->lastNode = q->firstNode;
+	}
+	else {
+		elem->parentNode = q->lastNode;
+		q->lastNode->childNode = elem;
+	}
+	q->lastNode = elem;
+	q->count++;
+}
+		
+void* Queue_Dequeue(Queue *q) {
+	if (q->count < 0 || q->maxsize < 0) {
+		printf("ERROR: Invalid Pointer To Queue\n");
+		return NULL;
+	}
+	
+	void *data = NULL;
+	if (q->count != 0) {
+		node_t *oldLeadingNode = q->firstNode;
+		data = oldLeadingNode->data;
+
+		q->firstNode = oldLeadingNode->childNode;
+		q->count--;
+
+
+		if (q->count > 0) {
+			free(q->firstNode->parentNode);
+			q->firstNode->parentNode = NULL;
+		}
+		else if (q->count == 0) {
+			free(q->firstNode);
+			free(q->lastNode);
+			q->firstNode = NULL;
+			q->lastNode = NULL;
+			oldLeadingNode = NULL;
+		}
+		else {
+			q->firstNode = NULL;
+			q->lastNode = NULL;
+			oldLeadingNode = NULL;
+		}
+	}
+	else {
+		printf("ERROR: Nothing to Dequeue\n");
+	}
+	return data;
+}
+
+//void* Queue_Dequeue(Queue *q) {
+	//if (q->count < 0 || q->maxsize < 0) {
+		//printf("ERROR: Invalid Pointer To Queue\n");
+		//return NULL;
+	//}
+	//
+	//void *data = NULL;
+	//if (q->count != 0) {
+		//node_t *oldLeadingNode = q->firstNode;
+		//data = oldLeadingNode->data;
+//
+		//if (q->count == 1) {
+			//free(q->lastNode);
+		//}
+//
+		//q->firstNode = oldLeadingNode->childNode;
+		//q->count--;
+//
+		//if (q->count > 0) {
+			//q->firstNode->parentNode = NULL;
+			//free(oldLeadingNode);
+		//}
+		//else {
+			////Calling free when there's no more nodes will throw a SIGABRT.  No idea why.
+			////free (q->firstNode);
+			////free(q->lastNode);
+			////free(oldLeadingNode);
+			//q->firstNode = NULL;
+			//q->lastNode = NULL;
+			//oldLeadingNode = NULL;
+		//}
+	//}
+	//else {
+		//printf("ERROR: Nothing to Dequeue\n");
+	//}
+	//return data;
+//}
+
+void* Queue_Pull(Queue *q) {
+	if (q->count < 0 || q->maxsize < 0) {
+		printf("ERROR: Invalid Pointer To Queue\n");
+		return NULL;
+	}
+	
+	void *data = NULL;
+	if (q->count != 0) {
+		node_t *oldLeadingNode = q->firstNode;
+		data = oldLeadingNode->data;
+
+		if (q->count == 1) {
+			free(q->lastNode);
+		}
+
+		q->firstNode = oldLeadingNode->childNode;
+		q->count--;
+
+		if (q->count > 0) {
+			q->firstNode->parentNode = NULL;
+			free(oldLeadingNode);
+		}
+		else {
+			//Calling free when there's no more nodes will throw a SIGABRT.  No idea why.
+			//free (q->firstNode);
+			//free(q->lastNode);
+			//free(oldLeadingNode);
+			q->firstNode = NULL;
+			q->lastNode = NULL;
+			oldLeadingNode = NULL;
+		}
+	}
+	else {
+		printf("ERROR: Nothing to Dequeue\n");
+	}
+	return data;
+}
+
+void* Queue_Peek(Queue *q) {
+	void *data = NULL;
+	if (q->count != 0) {
+		data = q->firstNode->data;
+	}
+	return data;
+}
+
+
+bool Queue_IsFull(Queue *q) {return (q->maxsize - q->count == 0) ? true : false;}
+bool Queue_IsEmpty(Queue *q) {return (q->count) ? false : true;}
+
+void Queue_Print(Queue *q, char * format) {
+	bool lambda(node_t* data, void *context) {
+		printf((char*) context, (char*)data->data);
+		return true;
+	}
+	Node_Iterator(q->firstNode, &lambda, (void*) format);
+	printf("\n");
+}
+
+
 
 
 /***************************************************************************

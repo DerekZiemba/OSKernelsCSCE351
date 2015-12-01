@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := ../HW2FinalCode/prob2/monitor2.c ../HW2FinalCode/prob2/pro_con2.c ../HW2FinalCode/SharedResources.c
+SOURCEFILES := ../HW2FinalCode/prob2/monitor2.c ../HW2FinalCode/prob2/pro_con2.c ../HW2FinalCode/SharedResources.c test.c
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 

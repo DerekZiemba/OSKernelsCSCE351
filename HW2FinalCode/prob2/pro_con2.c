@@ -4,7 +4,7 @@
 #include "../SharedResources.h"
 #include "monitor2.h"
 
-#define HARD_DELAY 800
+#define HARD_DELAY 0
 
 // Provided thread code
 void *producer(void *threadid) {
@@ -38,7 +38,25 @@ void *consumer(void *threadid) {
     
 
 int main() {
-
+	
+	Queue *test = Queue_init(0);
+	Queue_Enqueue(test, (void*) "1|"); Queue_Print(test, "%s");
+	Queue_Enqueue(test, (void*) "2|"); Queue_Print(test, "%s");	
+	Queue_Enqueue(test, (void*) "3|"); Queue_Print(test, "%s");
+	
+	
+	char* x1 = Queue_Dequeue(test); Queue_Print(test, "%s");
+	Queue_Enqueue(test, (void*) "4|"); Queue_Print(test, "%s");
+	char* x2 = Queue_Dequeue(test); Queue_Print(test, "%s");
+	char* x3 = Queue_Dequeue(test); Queue_Print(test, "%s");
+	
+	Queue_Enqueue(test, (void*) "5|"); Queue_Print(test, "%s");
+	char* x4 = Queue_Dequeue(test); Queue_Print(test, "%s");
+	char* x5 = Queue_Dequeue(test); Queue_Print(test, "%s");
+	Queue_Enqueue(test, (void*) "6|"); Queue_Print(test, "%s");
+	char* x6 = Queue_Dequeue(test); Queue_Print(test, "%s");
+	char* x7 = Queue_Dequeue(test); Queue_Print(test, "%s");
+	
 	pthread_t producers[NUM_THREADS];
 	pthread_t consumers[NUM_THREADS];
 	

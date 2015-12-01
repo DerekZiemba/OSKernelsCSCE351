@@ -9,8 +9,8 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#define BUFFER_SIZE 80 //Recommend 80 if PRINT_BUFFER_ON_INSERT is true so that it fits in the console window
-#define NUM_THREADS 8
+#define BUFFER_SIZE 12 //Recommend 80 if PRINT_BUFFER_ON_INSERT is true so that it fits in the console window
+#define NUM_THREADS 12
 
 #define PRINT_BUFFER_ON_INSERT true
 #define PRINT_BUFFER_ON_REMOVE true
@@ -22,6 +22,23 @@
 #define FALSE 0
 #define TRUE  !0
 typedef enum bool { false = FALSE, true  = TRUE} bool;
+
+
+/***************************************************************************
+* Interchangeability between altera and native types
+****************************************************************************/
+
+//#define u32 alt_u32
+//#define i32 alt_32
+//#define u16 alt_u16
+//#define i16 alt_16
+
+#define uint32 uint32_t
+#define int32 int32_t
+#define uint16 uint16_t
+#define int16 int16_t
+
+
 
 /***************************************************************************
 * Ring Buffer	
@@ -42,29 +59,33 @@ typedef struct RingBuffer {
 RingBuffer *RingBuffer_init(int size);
 
 /***************************************************************************
-* Linked List Queue
+* Generic Linked List Queue
 ****************************************************************************/
 typedef struct node_t {
-	void            *data;
-	struct node_t	*next;
-	void(*Print)(struct node_t *self);
+	void*			data;
+	struct node_t*	parentNode;
+	struct node_t*	childNode;
 } node_t;
 
-node_t *Node_init(void *data);
+node_t*	Node_init(void *data);
+void 	Node_Iterator(node_t *n, bool(*callback)(node_t* data, void* context), void *context);
 
 typedef struct Queue {
-	uint		size;
-	uint		count;
-	node_t		*head;
-	node_t		*tail;
-	bool(*IsFull)(struct Queue *self);
-	bool(*IsEmpty)(struct Queue *self);
-	void(*Enqueue)(struct Queue *self, void* data);	
-	void*(*Dequeue)(struct Queue *self);	
-	void(*Print)(struct Queue *self);
+	int32	maxsize;
+	int32	count;
+	node_t*	firstNode;
+	node_t*	lastNode;
 } Queue;
 
-Queue *Queue_init(uint maxsize);
+//Pass In 0 for unrestrained queue.
+Queue*	Queue_init(uint32 max_size);
+void	Queue_Enqueue(Queue *q, void *data);
+void*	Queue_Dequeue(Queue *q);
+void*	Queue_Peek(Queue *q);
+bool 	Queue_IsFull(Queue *q);
+bool 	Queue_IsEmpty(Queue *q);
+void 	Queue_Print(Queue *q, char * format);
+
 
 /***************************************************************************
 * Monitor
